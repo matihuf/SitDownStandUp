@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SitDownStandUp.ViewModels;
-using System;
 using System.Windows.Threading;
 using ToastNotifications;
 using ToastNotifications.Lifetime;
@@ -14,9 +13,9 @@ namespace SitDownStandUp
         {
             services.AddTransient<MainViewModel>();
             services.AddTransient<DispatcherTimer>();
-            services.AddTransient<Notifier>(t => new Notifier(cfg =>
+            services.AddTransient(t => new Notifier(cfg =>
             {
-                cfg.LifetimeSupervisor = new TimeAndCountBasedLifetimeSupervisor(TimeSpan.FromMinutes(5), MaximumNotificationCount.FromCount(1));
+                cfg.LifetimeSupervisor = new CountBasedLifetimeSupervisor(MaximumNotificationCount.FromCount(1));
                 cfg.PositionProvider = new PrimaryScreenPositionProvider(Corner.BottomRight, 10, 10);
             }));
             return services;

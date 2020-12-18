@@ -13,26 +13,57 @@ namespace SitDownStandUp.ViewModels
         private readonly DispatcherTimer _dispatcherTimer;
         private readonly Notifier _notifier;
         private PositionType _currentPositionType;
-        private int _timeLeft;
 
-        private string timeLeft;
-        public string TimeLeft
+        private int _timeLeft;
+        public int TimeLeft
         {
-            get { return timeLeft; }
-            set
+            get { return _timeLeft; }
+            private set
             {
-                if (value != timeLeft)
+                if (value != _timeLeft)
                 {
-                    timeLeft = value;
-                    RaisePropertyChanged("timeLeft");
+                    _timeLeft = value;
+                    RaisePropertyChanged("TimeLeft");
+                }
+            }
+        }
+
+        private double _currentProgress;
+        public double CurrentProgress
+        {
+            get { return _currentProgress; }
+            private set
+            {
+                if (value != _currentProgress)
+                {
+                    _currentProgress = value;
+                    RaisePropertyChanged("CurrentProgress");
+                }
+            }
+        }
+
+        private int _currentPositionTime;
+        public int CurrentPositionTime
+        {
+            get { return _currentPositionTime; }
+            private set
+            {
+                if (value != _currentPositionTime)
+                {
+                    _currentPositionTime = value;
+                    RaisePropertyChanged("CurrentPositionTime");
                 }
             }
         }
 
         public MainViewModel(DispatcherTimer dispatcherTimer, Notifier notifier)
         {
+            if (IsInDesignMode)
+                return;
+
             _currentPositionType = PositionType.Sitting;
-            _timeLeft = (int)_currentPositionType;
+            TimeLeft = (int)_currentPositionType;
+            CurrentPositionTime = (int)_currentPositionType;
             _notifier = notifier;
 
             _dispatcherTimer = dispatcherTimer;
@@ -45,12 +76,13 @@ namespace SitDownStandUp.ViewModels
         {
             if (_timeLeft > 0)
             {
-                _timeLeft -= _dispatcherTimer.Interval.Seconds;
-                TimeLeft = $"{_timeLeft} minuty";
+                TimeLeft -= _dispatcherTimer.Interval.Minutes;
+                CurrentProgress++;
             }
             else
             {
                 _dispatcherTimer.Stop();
+                CurrentProgress = 0;
                 _notifier.ClearMessages(new ClearAll());
                 _notifier.ShowCustomCommand($"Zmiana pozycji z {_currentPositionType}", Confirmation(), Decline());
             }
@@ -60,7 +92,7 @@ namespace SitDownStandUp.ViewModels
         {
             return n =>
             {
-                _timeLeft = (int)_currentPositionType;
+                TimeLeft = (int)_currentPositionType;
                 _dispatcherTimer.Start();
                 n.Close();
             };
@@ -75,7 +107,8 @@ namespace SitDownStandUp.ViewModels
                 else
                     _currentPositionType = PositionType.Sitting;
 
-                _timeLeft = (int)_currentPositionType;
+                TimeLeft = (int)_currentPositionType;
+                CurrentPositionTime = (int)_currentPositionType;
                 _dispatcherTimer.Start();
                 n.Close();
             };

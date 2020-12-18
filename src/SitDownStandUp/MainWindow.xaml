@@ -1,17 +1,30 @@
-﻿<Window
+﻿<mah:MetroWindow
     x:Class="SitDownStandUp.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:SitDownStandUp"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Title="MainWindow"
-    Width="800"
-    Height="450"
     Closing="Window_Closing"
     DataContext="{Binding Main, Source={StaticResource Locator}}"
+    Style="{StaticResource window}"
     mc:Ignorable="d">
+
+    <Window.Resources>
+        <ResourceDictionary Source="MainWindow.style.xaml" />
+    </Window.Resources>
+
     <Grid>
-        <Label Content="{Binding TimeLeft}" />
+        <StackPanel>
+            <Label Content="{Binding TimeLeft, Mode=OneWay}" Style="{StaticResource timeLabel}" />
+            <Label Content="min" Style="{StaticResource timeUnitLabel}" />
+        </StackPanel>
+        <ProgressBar Maximum="{Binding CurrentPositionTime, Mode=OneWay}" Value="{Binding CurrentProgress, Mode=OneWay}">
+            <ProgressBar.RenderTransform>
+                <TransformGroup>
+                    <RotateTransform Angle="180" />
+                </TransformGroup>
+            </ProgressBar.RenderTransform>
+        </ProgressBar>
     </Grid>
-</Window>
+</mah:MetroWindow>
