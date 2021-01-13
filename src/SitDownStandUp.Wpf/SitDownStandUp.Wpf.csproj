@@ -17,6 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SitDownStandUp.Application\SitDownStandUp.Application.csproj" />
+    <ProjectReference Include="..\SitDownStandUp.Wpf.Infrastructure\SitDownStandUp.Wpf.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Resource1.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

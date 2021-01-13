@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SitDownStandUp.ViewModels;
+using SitDownStandUp.Application;
+using SitDownStandUp.Application.ViewModels;
+using SitDownStandUp.Wpf.Infrastructure;
 using System;
 
-namespace SitDownStandUp
+namespace SitDownStandUp.Wpf
 {
     public class ViewModelLocator
     {
@@ -11,7 +13,8 @@ namespace SitDownStandUp
         public ViewModelLocator()
         {
             _serviceProvider = new ServiceCollection()
-               .Inject()
+               .AddInfrastructure()
+               .AddApplication()
                .BuildServiceProvider();
         }
 

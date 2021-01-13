@@ -1,17 +1,15 @@
 ﻿using GalaSoft.MvvmLight;
-using SitDownStandUp.CustomCommand;
+using GalaSoft.MvvmLight.Command;
+using SitDownStandUp.Application.Interfaces;
 using SitDownStandUp.Models.Enums;
 using System;
-using System.Windows.Threading;
-using ToastNotifications;
-using ToastNotifications.Lifetime.Clear;
 
-namespace SitDownStandUp.ViewModels
+namespace SitDownStandUp.Application.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private readonly DispatcherTimer _dispatcherTimer;
-        private readonly Notifier _notifier;
+        private readonly IDispatcherTimer _dispatcherTimer;
+        private readonly IToastNotification _toastNotification;
         private PositionType _currentPositionType;
 
         private int _timeLeft;
@@ -56,7 +54,7 @@ namespace SitDownStandUp.ViewModels
             }
         }
 
-        public MainViewModel(DispatcherTimer dispatcherTimer, Notifier notifier)
+        public MainViewModel(IDispatcherTimer dispatcherTimer, IToastNotification toastNotification)
         {
             if (IsInDesignMode)
                 return;
@@ -64,11 +62,11 @@ namespace SitDownStandUp.ViewModels
             _currentPositionType = PositionType.Sitting;
             TimeLeft = (int)_currentPositionType;
             CurrentPositionTime = (int)_currentPositionType;
-            _notifier = notifier;
+            _toastNotification = toastNotification;
 
             _dispatcherTimer = dispatcherTimer;
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
-            _dispatcherTimer.Interval = TimeSpan.FromMinutes(1);
+            _dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
             _dispatcherTimer.Start();
         }
 
@@ -76,31 +74,31 @@ namespace SitDownStandUp.ViewModels
         {
             if (_timeLeft > 0)
             {
-                TimeLeft -= _dispatcherTimer.Interval.Minutes;
+                TimeLeft -= _dispatcherTimer.Interval.Seconds;
                 CurrentProgress++;
             }
             else
             {
                 _dispatcherTimer.Stop();
                 CurrentProgress = 0;
-                _notifier.ClearMessages(new ClearAll());
-                _notifier.ShowCustomCommand($"Zmiana pozycji z {_currentPositionType}", Confirmation(), Decline());
+                _toastNotification.Close();
+                _toastNotification.Show($"Zmiana pozycji z {_currentPositionType}", new RelayCommand(Confirmation()), new RelayCommand(Decline()));
             }
         }
 
-        private Action<CustomCommandNotification> Decline()
+        private Action Decline()
         {
-            return n =>
+            return () =>
             {
                 TimeLeft = (int)_currentPositionType;
                 _dispatcherTimer.Start();
-                n.Close();
+                _toastNotification.Close();
             };
         }
 
-        private Action<CustomCommandNotification> Confirmation()
+        private Action Confirmation()
         {
-            return n =>
+            return () =>
             {
                 if (_currentPositionType == PositionType.Sitting)
                     _currentPositionType = PositionType.Standing;
@@ -110,7 +108,7 @@ namespace SitDownStandUp.ViewModels
                 TimeLeft = (int)_currentPositionType;
                 CurrentPositionTime = (int)_currentPositionType;
                 _dispatcherTimer.Start();
-                n.Close();
+                _toastNotification.Close();
             };
         }
     }

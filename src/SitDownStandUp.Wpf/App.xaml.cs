@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Forms;
 
-namespace SitDownStandUp
+namespace SitDownStandUp.Wpf
 {
     public partial class App : System.Windows.Application
     {
@@ -11,7 +11,7 @@ namespace SitDownStandUp
         {
             _notifyIcon = new NotifyIcon();
             _notifyIcon.DoubleClick += (s, args) => ShowMainWindow();
-            _notifyIcon.Icon = SitDownStandUp.Resource1.Icon1;
+            _notifyIcon.Icon = SitDownStandUp.Wpf.Resource1.Icon1;
             _notifyIcon.Visible = true;
             CreateContextMenu();
         }

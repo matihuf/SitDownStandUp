@@ -1,6 +1,6 @@
 ﻿using ToastNotifications.Core;
 
-namespace SitDownStandUp.CustomCommand
+namespace SitDownStandUp.Wpf.Infrastructure.CustomCommand
 {
     /// <summary>
     /// Interaction logic for CustomCommandDisplayPart.xaml

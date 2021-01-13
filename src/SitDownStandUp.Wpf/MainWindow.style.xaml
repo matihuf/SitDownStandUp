@@ -19,14 +19,14 @@
         <Setter Property="VerticalContentAlignment" Value="Bottom" />
         <Setter Property="FontSize" Value="56" />
         <Setter Property="FontWeight" Value="Bold" />
-        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Foreground" Value="Black" />
     </Style>
     <Style x:Key="timeUnitLabel" TargetType="Label">
         <Setter Property="Padding" Value="0" />
         <Setter Property="VerticalContentAlignment" Value="Bottom" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="FontSize" Value="26" />
-        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Foreground" Value="Black" />
     </Style>
     <Style TargetType="ProgressBar">
         <Setter Property="HorizontalAlignment" Value="Stretch" />

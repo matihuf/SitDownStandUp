@@ -1,33 +1,22 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using ToastNotifications.Core;
 
-namespace SitDownStandUp.CustomCommand
+namespace SitDownStandUp.Wpf.Infrastructure.CustomCommand
 {
     public class CustomCommandNotification : NotificationBase, INotifyPropertyChanged
     {
         private CustomCommandDisplayPart _displayPart;
-
-        private readonly Action<CustomCommandNotification> _confirmAction;
-        private readonly Action<CustomCommandNotification> _declineAction;
-
         public ICommand ConfirmCommand { get; set; }
         public ICommand DeclineCommand { get; set; }
 
-        public CustomCommandNotification(string message,
-            Action<CustomCommandNotification> confirmAction,
-            Action<CustomCommandNotification> declineAction,
-            MessageOptions messageOptions)
+        public CustomCommandNotification(string message, ICommand confirmationCommand, ICommand declineCommand, MessageOptions messageOptions = null)
             : base(message, messageOptions)
         {
             Message = message;
-            _confirmAction = confirmAction;
-            _declineAction = declineAction;
-
-            ConfirmCommand = new RelayCommand(x => _confirmAction(this));
-            DeclineCommand = new RelayCommand(x => _declineAction(this));
+            ConfirmCommand = confirmationCommand;
+            DeclineCommand = declineCommand;
         }
 
         public override NotificationDisplayPart DisplayPart => _displayPart ?? (_displayPart = new CustomCommandDisplayPart(this));

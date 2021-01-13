@@ -1,6 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 
-namespace SitDownStandUp
+namespace SitDownStandUp.Wpf
 {
     public partial class MainWindow : MetroWindow
     {
