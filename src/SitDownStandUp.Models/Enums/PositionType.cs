@@ -2,7 +2,7 @@
 {
     public enum PositionType
     {
-        Sitting = 5,
+        Sitting = 45,
         Standing = 15
     }
 }

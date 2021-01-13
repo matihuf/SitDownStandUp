@@ -66,7 +66,7 @@ namespace SitDownStandUp.Application.ViewModels
 
             _dispatcherTimer = dispatcherTimer;
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
-            _dispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+            _dispatcherTimer.Interval = TimeSpan.FromMinutes(1);
             _dispatcherTimer.Start();
         }
 
@@ -74,7 +74,7 @@ namespace SitDownStandUp.Application.ViewModels
         {
             if (_timeLeft > 0)
             {
-                TimeLeft -= _dispatcherTimer.Interval.Seconds;
+                TimeLeft -= _dispatcherTimer.Interval.Minutes;
                 CurrentProgress++;
             }
             else
